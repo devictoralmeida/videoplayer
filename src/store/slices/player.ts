@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { useAppSelector } from "..";
-import { api } from "../../lib/axios";
+import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { useAppSelector } from '..'
+import { api } from '../../lib/axios'
 
 interface ICourse {
   id: number
@@ -29,16 +29,17 @@ const initialState: IPlayerState = {
   isLoading: true,
 }
 
-export const loadCourse = createAsyncThunk( // Funciona como uma action assíncrona
-  'player/load', //nome da action, pode ser qqr um
+export const loadCourse = createAsyncThunk(
+  // Funciona como uma action assíncrona
+  'player/load', // nome da action, pode ser qqr um
   async () => {
     const response = await api.get('/courses/1')
     return response.data // aqui será o payload quando a requisição assíncrona acabar
-  }
+  },
 )
 
 const playerSlice = createSlice({
-  name: "player",
+  name: 'player',
   initialState,
   reducers: {
     play: (state, action: PayloadAction<[number, number]>) => {
@@ -48,7 +49,8 @@ const playerSlice = createSlice({
 
     next: (state) => {
       const nextLessonIndex = state.currentLessonIndex + 1
-      const nextLesson = state.course?.modules[state.currentModuleIndex].lessons[nextLessonIndex]
+      const nextLesson =
+        state.course?.modules[state.currentModuleIndex].lessons[nextLessonIndex]
 
       if (nextLesson) {
         state.currentLessonIndex = nextLessonIndex
@@ -61,31 +63,31 @@ const playerSlice = createSlice({
           state.currentLessonIndex = 0
         }
       }
-    }
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadCourse.pending, (state) => {
-      state.isLoading = true;
+      state.isLoading = true
     })
 
-    builder.addCase(loadCourse.fulfilled, (state, action) => { // quero executar algo quando o asyncThunk tiver finalizado
+    builder.addCase(loadCourse.fulfilled, (state, action) => {
+      // quero executar algo quando o asyncThunk tiver finalizado
       state.course = action.payload
-      state.isLoading = false;
+      state.isLoading = false
     })
-  }
-});
+  },
+})
 
-export const player = playerSlice.reducer;
-export const { play, next } = playerSlice.actions;
+export const player = playerSlice.reducer
+export const { play, next } = playerSlice.actions
 
 export const useCurrentLesson = () => {
-  return useAppSelector(state => {
-
-    const {currentModuleIndex, currentLessonIndex} = state.player
+  return useAppSelector((state) => {
+    const { currentModuleIndex, currentLessonIndex } = state.player
 
     const currentModule = state.player.course?.modules[currentModuleIndex]
     const currentLesson = currentModule?.lessons[currentLessonIndex]
 
-    return {currentModule, currentLesson}
+    return { currentModule, currentLesson }
   })
 }

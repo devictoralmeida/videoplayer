@@ -1,10 +1,10 @@
-import { PlayCircle, Video } from "lucide-react";
+import { PlayCircle, Video } from 'lucide-react'
 
 interface LessonProps {
-  title: string;
-  duration: string;
-  onPlay: () => void;
-  isCurrent?: boolean;
+  title: string
+  duration: string
+  onPlay: () => void
+  isCurrent?: boolean
 }
 
 const Lesson = ({
@@ -20,7 +20,6 @@ const Lesson = ({
       disabled={isCurrent}
       className="flex items-center gap-3 text-sm text-zinc-400 data-[active=true]:text-emerald-400 enabled:hover:text-zinc-100"
     >
-
       {isCurrent ? (
         <PlayCircle className="w-4 h-4 text-emerald-400" />
       ) : (
@@ -32,7 +31,7 @@ const Lesson = ({
         {duration}
       </span>
     </button>
-  );
-};
+  )
+}
 
-export default Lesson;
+export default Lesson
